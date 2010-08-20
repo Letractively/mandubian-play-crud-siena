@@ -1,2 +1,2 @@
-== How to use the CRUD-Siena Play! framework
+== How to use the CRUD-Siena Play! framework ==
   * very simple
