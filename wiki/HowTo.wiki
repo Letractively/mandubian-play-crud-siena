@@ -1,3 +1,88 @@
 == How to use the CRUD-Siena Play! framework ==
-  * First of all, you have to enable Siena support to your Play! project
+=== First of all, you have to enable Siena support to your Play! project ===
  _You can find information about it directly [http://www.playframework.org/modules/siena-1.2/home there]_
+
+----
+
+=== You need to make your Siena entity inherit the class SienaSupport ===
+_This is exactly the sister class of Play! default class JpaSupport_
+  For example:
+{{{
+@Table("employees")
+public class Employee extends SienaSupport {
+        
+        @Id(Generator.AUTO_INCREMENT)
+        public Long id;
+        
+        @Column("first_name")
+        @Max(100) @NotNull
+        public String firstName;
+        
+        @Column("last_name")
+        @Max(200) @NotNull
+        public String lastName;
+        
+        @Column("contact_info")
+        public Json contactInfo;
+        
+        @Column("boss") 
+        @Index("boss_index")
+        public Employee boss;
+        
+        @Filter("boss")
+        public Query<Employee> employees;
+               
+        @Embedded
+        public Image profileImage;
+        
+        @Embedded
+        public List<Image> otherImages;
+
+        @Embedded
+        public Map<String, Image> stillImages;
+        
+        @EmbeddedMap
+        public class Image {
+                public String filename;
+                public String title;
+                public int views;
+        }
+        
+        public static Query<Employee> all() {
+                return Model.all(Employee.class);
+        }
+        
+        public String toString() {
+                return firstName + " " + lastName;
+        }
+
+}
+}}}
+
+Please be aware of the possibility to manage:
+  * _Json_ fields
+  * _One to Many_ relation
+  * _Many to One_ relation
+  * _Embedded_ json-serialized objects : single object/list/map
+
+For more information about Siena, go directly to [http://www.sienaproject.com Siena site]
+
+
+----
+
+=== You need to create a controller inheriting class CRUD for each Siena entity requiring CRUD support ===
+_This is exactly the sister class of Play! default controller CRUD_
+   For example:
+{{{
+public class Employees extends controllers.CRUD {    
+
+}
+}}}
+
+----
+
+=== You need to enable routes to the CRUD module ===
+At the beginning of your conf/routes file, add:
+{{{
+*      	/admin             						module:crudsiena
+}}}
