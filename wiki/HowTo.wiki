@@ -2,6 +2,7 @@
 === First of all, you have to enable Siena support to your Play! project ===
  _You can find information about it directly [http://www.playframework.org/modules/siena-1.2/home there]_
 
+ ==== YOU SHALL USE VERSION 1.2 of this siena module because it integrates Siena 0.7.5 correcting an important issue concerning JSON (de)serialization of embedded objects ====
 ----
 
 === You need to make your Siena entity inherit the class SienaSupport ===
