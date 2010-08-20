@@ -1,2 +1,3 @@
 == How to use the CRUD-Siena Play! framework ==
-  * very simple
+  * First of all, you have to enable Siena support to your Play! project
+ _You can find information about it directly [http://www.playframework.org/modules/siena-1.2/home there]_
