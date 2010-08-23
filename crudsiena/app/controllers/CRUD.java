@@ -284,11 +284,19 @@ public class CRUD extends Controller {
                 return ((For) (controllerClass.getAnnotation(For.class))).value();
             }
             String name = controllerClass.getSimpleName();
-            name = "models." + name.substring(0, name.length() - 1);
+            // Search a controller for the model class
+            // first tries name pluralized "model" -> "models"
+            String searchName = "models." + name.substring(0, name.length() - 1);
             try {
-                return Play.classloader.loadClass(name);
+                return Play.classloader.loadClass(searchName);
             } catch (ClassNotFoundException e) {
-                return null;
+            	// now tries "model" -> "model"
+            	searchName = "models." + name;
+            	try {
+                    return Play.classloader.loadClass(searchName);
+                } catch (ClassNotFoundException e2) {
+                	return null;
+                }
             }
         }
 
