@@ -66,6 +66,12 @@ Please be aware of the possibility to manage:
   * _Many to One_ relation
   * _Embedded_ json-serialized objects : single object/list/map
 
+
+*With GAE, there are limitations to be aware of (at least for the time being until further evolutions):
+  * _@Id_ annotated field corresponding to the primary key must be Long type
+  * _@Id_ annotated field corresponding to the primary key must be called "id"*
+
+
 For more information about Siena, go directly to [http://www.sienaproject.com Siena site]
 
 
@@ -73,8 +79,28 @@ For more information about Siena, go directly to [http://www.sienaproject.com Si
 
 === You need to create a controller inheriting class CRUD for each Siena entity requiring CRUD support ===
 _This is exactly the sister class of Play! default controller CRUD_
+
+The name of the Controller class corresponding to a model class can be:
+   * *ModelClassName* _(this option is valid on in crudsiena because I found it more intuitive)_
    For example:
 {{{
+public class Employee extends controllers.CRUD {    
+
+}
+}}}
+
+   * *ModelClassName+'s'* (pluralized) _(but any char instead of 's' is OK also)_
+   For example:
+{{{
+public class Employees extends controllers.CRUD {    
+
+}
+}}}
+
+   * *@For(ModelClass)* annotation added to your controller 
+   For example:
+{{{
+@For(models.Employee.class)
 public class Employees extends controllers.CRUD {    
 
 }
