@@ -67,7 +67,7 @@ Please be aware of the possibility to manage:
   * _Embedded_ json-serialized objects : single object/list/map
 
 
-*With GAE, there are limitations to be aware of (at least for the time being until further evolutions):
+*With GAE, there are limitations to be aware of (at least until further evolutions):
   * _@Id_ annotated field corresponding to the primary key must be Long type
   * _@Id_ annotated field corresponding to the primary key must be called "id"*
 
