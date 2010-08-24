@@ -6,4 +6,17 @@
 	#{ifError field.name}
 		<span class="error">${field.error}</span>
 	#{/ifError}
+
+	<script type="text/javascript">
+		$(function(){
+
+			// Datepicker
+			$('#${field.id}').datepicker({
+				inline: true,
+				dateFormat: 'yy-mm-dd',
+				gotoCurrent: true
+			});
+				
+		});
+	</script>
 #{/field}
