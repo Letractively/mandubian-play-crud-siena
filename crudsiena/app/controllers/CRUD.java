@@ -28,6 +28,7 @@ import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.Router;
 import siena.Column;
+import siena.DateTime;
 import siena.Filter;
 import siena.Id;
 import siena.Json;
@@ -427,6 +428,9 @@ public class CRUD extends Controller {
             }
             else if (Date.class.isAssignableFrom(field.getType())) {
                 type = "date";
+                if (field.isAnnotationPresent(DateTime.class)) {
+                	type = "datetime";
+                }
             }          
             // type SienaSupport 
             else if (SienaSupport.class.isAssignableFrom(field.getType())) {

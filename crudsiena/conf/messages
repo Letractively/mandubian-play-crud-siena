@@ -37,6 +37,7 @@ crud.help.minlength=Min length is %d.
 crud.help.maxlength=Max length is %d.
 crud.help.email=Valid email address.
 crud.help.dateformat=YYYY-MM-DD format.
+crud.help.dateTimeformat=YYYY-MM-DD hh:mm:ss format.
 crud.help.numeric=Numeric.
 crud.help.min=Must be greater than %d.
 crud.help.future=In the future.
