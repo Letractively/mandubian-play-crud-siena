@@ -73,6 +73,11 @@
                     %{ am = 'crud.help.dateformat' }%
                 #{/if}
 
+                #{if field.type == 'datetime'}
+                    #{crud.dateTimeField name:field.name, value:(currentObject ? currentObject[field.name] : null) /}
+                    %{ am = 'crud.help.dateTimeformat' }%
+                #{/if}
+
                 #{if field.type == 'relation'}
                     #{crud.relationField name:field.name, value:(currentObject ? currentObject[field.name] : null), field:field, id:(currentObject ? currentObject.id : null) /}
                 #{/if}
