@@ -6,7 +6,7 @@
 	#{if _field.multiple}
 		<input type="hidden" name="${field.name}@id" value="" />
 		<select id="${field.id}" name="${field.name}@id" multiple="yes">
-			%{ siena.Model.all(play.Play.classloader.loadClass(_field.relation)).fetch().sort{ it.toString() }.each() { }%
+			%{ siena.Model.all(play.Play.classloader.loadClass(_field.relation)).fetch()?.sort{ it?(it.toString()?:""):"" }.each() { }%
 			%{
 				selected = false;
 				if(field.error?.message != 'validation.required') {
@@ -29,7 +29,7 @@
 		    #{else}
                 <option value="">&{'crud.selectValue'}</option>
 		    #{/else}
-			%{ siena.Model.all(play.Play.classloader.loadClass(_field.relation)).fetch().sort{ it.toString() }.each() { }%
+			%{ siena.Model.all(play.Play.classloader.loadClass(_field.relation)).fetch()?.sort{ it?(it.toString()?:""):"" }.each() { }%
 			%{
 				selected = false
 				if(field.error?.message != 'validation.required') {
