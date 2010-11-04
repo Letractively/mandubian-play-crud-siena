@@ -6,10 +6,9 @@ The CRUD (Create, Read, Update, Delete) Siena module generates a fully usable we
 
 h2. <a>First of all, you have to enable Siena support to your Play! project</a>
 
-p(note). **Note** you can find information about it directly "there":http://www.playframework.org/modules/siena-1.2/home
+p(note). **Note** Just call this command to get last siena version:
 
-p(note). **YOU SHALL USE VERSION 1.2 of this siena module** because it integrates Siena 0.7.5 correcting an important issue concerning JSON (de)serialization of embedded objects*
-
+bc.. play install siena
 
 h2. <a>You need to make your Siena entity inherit the class SienaSupport</a>
 
@@ -33,7 +32,15 @@ public class Employee extends SienaSupport {
    
         @Column("contact_info")
         public Json contactInfo;     
-   
+              
+        @Column("hire_date")
+        public Date hireDate;
+
+        @Column("fire_date")
+        @DateTime	// displays a timepicker
+        @As(lang={"*"}, value={"yyyy-MM-dd hh:mm:ss"}) // REQUIRED to retrieve the time selected with timepicker
+        public Date fireDate;
+          
         @Column("boss") 
         @Index("boss_index")
         public Employee boss;       
@@ -120,4 +127,7 @@ h3. **GAE**
 h3. **Validation with Siena annotations**
 
 * _@Max_/_@Min are managed
+* _@DateTime_ is managed and displays a timepicker but you need to add also the following annotation so that it gets the time:
+bc. @As(lang={"*"}, value={"yyyy-MM-dd hh:mm:ss"})
+ 
 * Other annotations should be tested and implemented when missing 
