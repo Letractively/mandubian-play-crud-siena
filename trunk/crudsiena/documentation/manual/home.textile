@@ -129,5 +129,6 @@ h3. **Validation with Siena annotations**
 * _@Max_/_@Min are managed
 * _@DateTime_ is managed and displays a timepicker but you need to add also the following annotation so that it gets the time:
 bc. @As(lang={"*"}, value={"yyyy-MM-dd hh:mm:ss"})
- 
+
+
 * Other annotations should be tested and implemented when missing 
