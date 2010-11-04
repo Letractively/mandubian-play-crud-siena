@@ -1,10 +1,14 @@
 package models;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import play.data.binding.As;
+
 import models.crudsiena.SienaSupport;
 import siena.Column;
+import siena.DateTime;
 import siena.Filter;
 import siena.Generator;
 import siena.Id;
@@ -35,7 +39,15 @@ public class Employee extends SienaSupport {
         public String lastName;
         
         @Column("contact_info")
-        public Json contactInfo;
+        public Json contactInfo;       
+        
+        @Column("hire_date")
+        public Date hireDate;
+
+        @Column("fire_date")
+        @DateTime
+        @As(lang={"*"}, value={"yyyy-MM-dd hh:mm:ss"})
+        public Date fireDate;
         
         @Column("boss") @Index("boss_index")
         public Employee boss;
