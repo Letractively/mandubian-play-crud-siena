@@ -3,8 +3,8 @@ package models.crudsiena;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,27 +12,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
-
-
 import play.Logger;
 import play.Play;
 import play.data.binding.BeanWrapper;
 import play.data.binding.Binder;
 import play.data.validation.Validation;
-import play.db.jpa.JPASupport;
 import play.exceptions.UnexpectedException;
 import play.mvc.Scope.Params;
-import siena.Column;
+import siena.DateTime;
 import siena.Filter;
 import siena.Id;
 import siena.Json;
 import siena.Model;
 import siena.Query;
 import siena.embed.Embedded;
-import siena.embed.EmbeddedList;
-import siena.embed.EmbeddedMap;
+
+import com.google.gson.JsonParseException;
 
 /**
  * All entity classes requirement CRUD Siena support should 
@@ -117,7 +112,7 @@ public abstract class SienaSupport
 	            		multiple = false;
 	            	}
 				}
-				
+
 				if (isEntity) {
 					// builds entity list for many to one
 					if (multiple) {
@@ -198,14 +193,27 @@ public abstract class SienaSupport
 									"validation.notParsable", 
 									ex.getCause()!=null?ex.getCause().getMessage(): ex.getMessage());
 						}
+						catch(IllegalArgumentException ex){
+							ex.printStackTrace();
+							Logger.error("json parser exception:%s", 
+									ex.getCause()!=null?ex.getCause().getMessage(): ex.getMessage());
+							Validation.addError(
+									name+"."+field.getName(), 
+									"validation.notParsable", 
+									ex.getCause()!=null?ex.getCause().getMessage(): ex.getMessage());
+						}
 					}
 				}	
 			}
 			// Then bind
 			// all composites objects (simple entity, list and maps) are managed
 			// by this function
-			bw.bind(name, o.getClass(), params, "", o);
+			// v1.0.x code
+			// bw.bind(name, o.getClass(), params, "", o);
 
+			// v1.1 compliant
+			bw.bind(name, (Type)o.getClass(), params, "", o, o.getClass().getAnnotations());
+			
 			return (T) o;
 		} catch (Exception e) {
 			throw new UnexpectedException(e);
