@@ -1,4 +1,4 @@
-p(note). the module project is hosted by google code at "mandubian-play-crud-siena:http://code.google.com/p/mandubian-play-crud-siena" under MIT license
+p(note). the module project is hosted by google code at "mandubian-play-crud-siena":http://code.google.com/p/mandubian-play-crud-siena under MIT license
 
 h1. CRUD Siena Play! module How-to
 
@@ -131,4 +131,4 @@ h3. **Validation with Siena annotations**
 bc. @As(lang={"*"}, value={"yyyy-MM-dd hh:mm:ss"})
 
 
-* Other annotations should be tested and implemented when missing 
+p(note). Other annotations should be tested and implemented when missing
