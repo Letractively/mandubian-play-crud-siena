@@ -1,8 +1,27 @@
 == How to use the CRUD-Siena Play! framework ==
 === First of all, you have to enable Siena support to your Play! project ===
- _You can find information about it directly [http://www.playframework.org/modules/siena-1.2/home there]_
+Just call the install command for module siena
+{{{
+play install siena
+}}}
 
- ==== YOU SHALL USE VERSION 1.2 of this siena module because it integrates Siena 0.7.5 correcting an important issue concerning JSON (de)serialization of embedded objects ====
+ _You can find information about it directly [http://www.playframework.org/modules/siena-1.3/home there]_
+
+ ==== YOU SHALL USE VERSION >=1.2 of the siena module because it integrates Siena 0.7.5 correcting an important issue concerning JSON (de)serialization of embedded objects ====
+----
+
+=== Then you install CrudSiena module ===
+_For Play! <1.1_, install CrudSiena <=1.01:
+{{{
+play install crudsiena-1.01
+}}}
+
+_For Play! >=1.1_, install CrudSiena >=1.1:
+{{{
+play install crudsiena-1.1
+}}}
+
+
 ----
 
 === You need to make your Siena entity inherit the class SienaSupport ===
@@ -26,6 +45,14 @@ public class Employee extends SienaSupport {
         @Column("contact_info")
         public Json contactInfo;
         
+        @Column("hire_date")
+        public Date hireDate;
+
+        @Column("fire_date")
+        @DateTime	// displays a timepicker (with date & time)
+        @As(lang={"*"}, value={"yyyy-MM-dd hh:mm:ss"}) // REQUIRED to retrieve the time selected with JQueryUI Timepicker in Play!
+        public Date fireDate;
+
         @Column("boss") 
         @Index("boss_index")
         public Employee boss;
@@ -65,7 +92,9 @@ Please be aware of the possibility to manage:
   * _One to Many_ relation
   * _Many to One_ relation
   * _Embedded_ json-serialized objects : single object/list/map
-
+  * _@Max_/_@Min are managed
+  * _@DateTime_ is managed and displays a timepicker (date+time) but you MUST add also the following annotation so that it gets the time also:
+{{{@As(lang={"*"}, value={"yyyy-MM-dd hh:mm:ss"})}}}
 
 *With GAE, there are limitations to be aware of (at least until further evolutions):
   * _@Id_ annotated field corresponding to the primary key must be Long type
