@@ -10,6 +10,17 @@ p(note). **Note** Just call this command to get last siena version:
 
 bc.. play install siena
 
+h2. <a>Then you install CrudSiena module</a>
+
+h3. For Play! <1.1_, install CrudSiena <=1.01:
+
+bc.. play install crudsiena-1.01
+
+h3. For Play! >=1.1_, install CrudSiena >=1.1:
+
+bc.. play install crudsiena-1.1
+
+
 h2. <a>You need to make your Siena entity inherit the class SienaSupport</a>
 
 p(note). **Note** this is exactly the sister class of Play! default class JpaSupport
