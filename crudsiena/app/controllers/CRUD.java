@@ -366,7 +366,7 @@ public class CRUD extends Controller {
 
         public List<ObjectField> getFields() {
             List fields = new ArrayList();
-            for (Field f : entityClass.getFields()) {
+            for (Field f : entityClass.getDeclaredFields()) {
                 if (Modifier.isTransient(f.getModifiers()) || Modifier.isFinal(f.getModifiers())) {
                     continue;
                 }
