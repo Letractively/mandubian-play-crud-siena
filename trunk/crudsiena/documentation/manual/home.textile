@@ -3,6 +3,9 @@ p(note). the module project is hosted by google code at "mandubian-play-google-c
 h1. Google Closure Play! module How-to
 
 The module for Play! framework provides javascript client templating based on "Google Closure Templating":http://code.google.com/closure/templates/ . 
+
+p(note). **Note:** Other tools from Google Closure may be added later. So don't hesitate to ask if you need something about them. 
+
 Any SOY template files in your app/** directory is automatically compiled into JS at runtime by the Play! enhancing mechanism.
 Then you call the JS from client side and you can template into HTML any JSON objects without writing boring JS code.
 
@@ -14,7 +17,7 @@ bc.. play install googleclosure
 
 h2. <a>Create a SOY template file in app/... directories</a>
 
-p(note). **Note** the SOY syntax is described "here":http://code.google.com/closure/templates/docs/overview.html
+p(note). **Note:** the SOY syntax is described "here":http://code.google.com/closure/templates/docs/overview.html
 
 For example, create app/views/soy/helloworld.soy:
 
@@ -68,7 +71,7 @@ examples.simple.helloName = function(opt_data, opt_sb) {
 
 h2. <a>Use this template in your Play view</a>
 
-p(note). **Note** Don't forget to import soyutils.js an helloworld.js
+p(note). **Note:** Don't forget to import soyutils.js an helloworld.js
 
 For example, in app/views/Application/index.html:
 
@@ -94,4 +97,4 @@ h2. <a>Modify helloworld.soy and reload immediately</a>
 The Play enhancer detects a modification on this file and recompiles it immediately.
 You can reload your webpage and see modifications.
 
-p(note). **Note** I tested it with greenscript and it seems to work fine!
+p(note). **Note:** I tested it with greenscript and it seems to work fine!
