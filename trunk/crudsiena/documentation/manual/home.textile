@@ -4,13 +4,13 @@ h1. CRUD Siena Play! module How-to
 
 The CRUD (Create, Read, Update, Delete) Siena module generates a fully usable web interface for your Siena Model objects.
 
-h2. <a>First of all, you have to enable Siena support to your Play! project</a>
+h2. <a>Enable Siena support to your Play! project</a>
 
 p(note). **Note** Just call this command to get last siena version:
 
 bc.. play install siena
 
-h2. <a>Then you install CrudSiena module</a>
+h2. <a>Install CrudSiena module</a>
 
 h3. For Play! <1.1_, install CrudSiena <=1.01:
 
@@ -18,12 +18,12 @@ bc.. play install crudsiena-1.01
 
 h3. For Play! >=1.1_, install CrudSiena >=1.1:
 
-bc.. play install crudsiena-1.1
+bc.. play install crudsiena-1.x
 
 
-h2. <a>You need to make your Siena entity inherit the class SienaSupport</a>
+h2. <a>Your Siena entity shall inherit SienaSupport</a>
 
-p(note). **Note** this is exactly the sister class of Play! default class JpaSupport
+p(note). **Note** this is exactly the sister class of Play! default class JpaSupport (from Play! version 1.0x)
 
 For example:
 
@@ -49,7 +49,6 @@ public class Employee extends SienaSupport {
 
         @Column("fire_date")
         @DateTime	// displays a timepicker
-        @As(lang={"*"}, value={"yyyy-MM-dd hh:mm:ss"}) // REQUIRED to retrieve the time selected with timepicker
         public Date fireDate;
           
         @Column("boss") 
@@ -93,7 +92,7 @@ p. Please be aware of the possibility to manage:
 
 p(note). For more information about Siena, go directly to "Siena site":http://www.sienaproject.com 
 
-h2. <a>You need to create a controller inheriting class CRUD for each Siena entity requiring CRUD support</a>
+h2. <a>Create a controller inheriting class CRUD for each Siena entity requiring CRUD support</a>
 
 p(note). **Note** this is exactly the sister class of Play! default controller CRUD
 
@@ -120,13 +119,22 @@ bc. @For(models.Employee.class)
 public class Employees extends controllers.CRUD {
 }
 
-h2. <a>You need to enable routes to the CRUD module</a>
+h2. <a>Enable routes to the CRUD module</a>
 
 At the beginning of your conf/routes file, add:
 
 bc. *    /admin    module:crudsiena
 
 p(note). You can get more information at "original CRUD module site":http://www.playframework.org/documentation/1.0.3/crud
+
+h2. <a>Play Validation with Siena annotations</a>
+
+* **@Siena.Max(NB_CHAR)** is managed (enhancer creates dynamically a @play.data.validation.MaxSize(NB_CHAR) ) 
+* **@Siena.NotNull** is managed (enhancer creates dynamically a @play.data.validation.Required ) 
+* **@DateTime** is managed and displays a timepicker
+
+p(note). _You can use any other Play! validation annotation but not binding annotations_ 
+
 
 h2. <a>Known Limitations</a>
 
@@ -135,11 +143,3 @@ h3. **GAE**
 * _@Id_ annotated field corresponding to the primary key must be Long type
 * _@Id_ annotated field corresponding to the primary key must be called "id"
 
-h3. **Validation with Siena annotations**
-
-* _@Max_/_@Min are managed
-* _@DateTime_ is managed and displays a timepicker but you need to add also the following annotation so that it gets the time:
-bc. @As(lang={"*"}, value={"yyyy-MM-dd hh:mm:ss"})
-
-
-p(note). Other annotations should be tested and implemented when missing
