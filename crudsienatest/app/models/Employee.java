@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import play.data.binding.As;
+import play.data.validation.MaxSize;
 
 import models.crudsiena.SienaSupport;
 import siena.Column;
@@ -31,22 +32,25 @@ public class Employee extends SienaSupport {
         public Long id;
         
         @Column("first_name")
-        @Max(100) @NotNull
+        @Max(10) @NotNull
+        //@play.data.validation.MaxSize(10) @play.data.validation.Required
         public String firstName;
+        
         
         @Column("last_name")
         @Max(200) @NotNull
         public String lastName;
         
         @Column("contact_info")
+        @NotNull
         public Json contactInfo;       
         
         @Column("hire_date")
         public Date hireDate;
-
+        
         @Column("fire_date")
         @DateTime
-        @As(lang={"*"}, value={"yyyy-MM-dd hh:mm:ss"})
+        //@As(lang={"*"}, value={"yyyy-MM-dd hh:mm:ss"})
         public Date fireDate;
         
         @Column("boss") @Index("boss_index")
