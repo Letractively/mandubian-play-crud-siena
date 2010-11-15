@@ -2,11 +2,10 @@ p(note). the module project is hosted by google code at "mandubian-play-google-c
 
 h1. Google Closure Play! module How-to
 
-The module for Play! framework provides javascript client templating based on "Google Closure Templating":http://code.google.com/closure/templates/ . 
-
-p(note). **Note:** Other tools from Google Closure may be added later. So don't hesitate to ask if you need something about them. 
-
-Any SOY template files in your app/** directory is automatically compiled into JS at runtime by the Play! enhancing mechanism.
+**This module is aimed at integrating Google Closure tools with play!. For the time being, it ONLY provides javascript client templating based on "Google Closure Templates":http://code.google.com/closure/templates/ .** 
+**Other tools from Google Closure will be added later but don't hesitate to ask if you need something first.** 
+ 
+With this module, any SOY template files in your app/** directory is automatically compiled into JS at runtime by the Play! enhancing mechanism.
 Then you call the JS from client side and you can template into HTML any JSON objects without writing boring JS code.
 
 
