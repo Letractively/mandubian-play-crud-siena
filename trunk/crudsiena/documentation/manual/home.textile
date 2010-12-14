@@ -1,99 +1,161 @@
-p(note). the module project is hosted by google code at "mandubian-play-google-closure":http://code.google.com/p/mandubian-play-google-closure under MIT license
+p(note). the module project is hosted by google code at "mandubian-play-crud-siena":http://code.google.com/p/mandubian-play-crud-siena under MIT license
 
-h1. Google Closure Play! module How-to
+h1. CRUD Siena Play! module How-to
 
-**This module is aimed at integrating Google Closure tools with play!. For the time being, it ONLY provides javascript client templating based on "Google Closure Templates":http://code.google.com/closure/templates/ .** 
-**Other tools from Google Closure will be added later but don't hesitate to ask if you need something first.** 
+The CRUD (Create, Read, Update, Delete) Siena module generates a fully usable web interface for your Siena Model objects.
+
+h2. <a>Enable Siena support to your Play! project</a>
+
+p(note). **Note** Just call this command to get last siena version:
+
+bc.. play install siena
+
+h2. <a>Install CrudSiena module</a>
+
+h3. For Play! <1.1_, install CrudSiena <=1.01:
+
+bc.. play install crudsiena-1.01
+
+h3. For Play! >=1.1_, install CrudSiena >=1.1:
+
+bc.. play install crudsiena-1.x
+
+
+h2. <a>Your Siena entity shall inherit SienaSupport</a>
+
+p(note). **Note** this is exactly the sister class of Play! default class JpaSupport (from Play! version 1.0x)
+
+For example:
+
+bc.. @Table("employees")
+public class Employee extends SienaSupport {
+
+        @Id(Generator.AUTO_INCREMENT)
+        public Long id; 
+
+        @Column("first_name")
+        @Max(100) @NotNull
+        public String firstName;      
+  
+        @Column("last_name")
+        @Max(200) @NotNull
+        public String lastName;     
+   
+        @Column("contact_info")
+        public Json contactInfo;     
+              
+        @Column("hire_date")
+        public Date hireDate;
+
+        @Column("fire_date")
+        @DateTime	// displays a timepicker
+        public Date fireDate;
+          
+        @Column("boss") 
+        @Index("boss_index")
+        public Employee boss;       
  
-With this module, any SOY template files in your app/** directory is automatically compiled into JS at runtime by the Play! enhancing mechanism.
-Then you call the JS from client side and you can template into HTML any JSON objects without writing boring JS code.
+        @Filter("boss")
+        public Query<Employee> employees;               
+
+        @Embedded
+        public Image profileImage;        
+
+        @Embedded
+        public List<Image> otherImages;
+
+        @Embedded
+        public Map<String, Image> stillImages;        
+
+        @EmbeddedMap
+        public class Image {
+                public String filename;
+                public String title;
+                public int views;
+        }        
+
+        public static Query<Employee> all() {
+                return Model.all(Employee.class);
+        }        
+
+        public String toString() {
+                return firstName + " " + lastName;
+        }
+}
 
 
-h2. <a>Install GoogleClosure module</a>
+p. Please be aware of the possibility to manage:
+* _Json_ fields
+* _One to Many_ relation
+* _Many to One_ relation
+* _Embedded_ json-serialized objects : single object/list/map
 
-bc.. play install googleclosure
+p(note). For more information about Siena, go directly to "Siena site":http://www.sienaproject.com 
 
+h2. <a>Create a controller inheriting class CRUD for each Siena entity requiring CRUD support</a>
 
-h2. <a>Create a SOY template file in app/... directories</a>
+p(note). **Note** this is exactly the sister class of Play! default controller CRUD
 
-p(note). **Note:** the SOY syntax is described "here":http://code.google.com/closure/templates/docs/overview.html
+p. The name of the Controller class corresponding to a model class can be:
+* **ModelClassName** _(this option is valid on in crudsiena because I found it more intuitive)_
 
-For example, create app/views/soy/helloworld.soy:
+For example:
 
-bc.. {namespace examples.simple}
+bc. public class Employee extends controllers.CRUD {    
+}
 
-/**
- * Says hello to the world.
- */
-{template .helloWorld}
-  Hello world!Then you call the JS from client side and you can template into HTML any JSON objects for example
-{/template}
+* **ModelClassName+'s'** (pluralized) _(but any char instead of 's' is OK also)_
 
-/**
- * Greets a person using "Hello" by default.
- * @param name The name of the person.
- * @param? greetingWord Optional greeting word to use instead of "Hello".
- */
-{template .helloName}
-  {if not $greetingWord}
-    Hello {$name}!
-  {else}
-    {$greetingWord} {$name}!
-  {/if}
-{/template}
+For example:
 
+bc. public class Employees extends controllers.CRUD {    
+}
 
-p. Reload your web page and have a look at directory public/javascripts.
-You should see a "helloworld.js" file.
+* **@For(ModelClass)** annotation added to your controller 
 
-bc.. // This file was automatically generated from helloworld.soy.
-// Please don't edit this file by hand.
+For example:
 
-if (typeof examples == 'undefined') { var examples = {}; }
-if (typeof examples.simple == 'undefined') { examples.simple = {}; }
+bc. @For(models.Employee.class)
+public class Employees extends controllers.CRUD {
+}
 
+h2. <a>Enable routes to the CRUD module</a>
 
-examples.simple.helloWorld = function(opt_data, opt_sb) {
-  var output = opt_sb || new soy.StringBuilder();
-  output.append('Hello world!');
-  if (!opt_sb) return output.toString();
-};
+At the beginning of your conf/routes file, add:
 
+bc. *    /admin    module:crudsiena
 
-examples.simple.helloName = function(opt_data, opt_sb) {
-  var output = opt_sb || new soy.StringBuilder();
-  output.append((! opt_data.greetingWord) ? 'Hello ' + soy.$$escapeHtml(opt_data.name) + '!' : soy.$$escapeHtml(opt_data.greetingWord) + ' ' + soy.$$escapeHtml(opt_data.name) + '!');
-  if (!opt_sb) return output.toString();
-};
+p(note). You can get more information at "original CRUD module site":http://www.playframework.org/documentation/1.0.3/crud
+
+h2. <a>Play Validation with Siena annotations</a>
+
+These are Siena model Annotations managed by the CrudSiena module: 
+* **@Siena.Max(NB_CHAR)** is managed (enhancer creates dynamically a @play.data.validation.MaxSize(NB_CHAR) ) 
+* **@Siena.NotNull** is managed (enhancer creates dynamically a @play.data.validation.Required ) 
+* **@DateTime** is managed and displays a timepicker
 
 
 
-h2. <a>Use this template in your Play view</a>
+h2. <a>Play Validation with Play annotations</a>
 
-p(note). **Note:** Don't forget to import soyutils.js an helloworld.js
+These are Play Annotations managed by the CrudSiena module:
+* **@Required** is managed and displays an error if the field is not filled
+* **@Password** is managed and displays a password text field
 
-For example, in app/views/Application/index.html:
-
-bc.. #{extends 'main.html' /}
-#{set title:'Home' /}
-
-*{ #{welcome /} }*
-#{set 'moreScripts'}
-	<script src="@{'/public/javascripts/soyutils.js'}" type="text/javascript" charset="utf-8"></script>
-	<script src="@{'/public/javascripts/helloworld.js'}" type="text/javascript" charset="utf-8"></script>
-#{/set}
-<script type="text/javascript">
-	//Exercise the .helloWorld template
-	document.write(examples.simple.helloName({"name": "Bob", "greetingWord":"Coucou"}));
-</script>
-
-p. Reload your web page and you should see
-**Coucou Bob!** 
+p(note). _You can't use Play! binding annotations_ 
 
 
-h2. <a>Modify helloworld.soy and reload immediately</a>
+h2. <a>Specific CrudSiena annotations</a>
 
-The Play enhancer detects a modification on this file and recompiles it immediately.
-You can reload your webpage and see modifications.
+* **@CrudUnique** is a new Annotation not provided by Play neither Siena. It verifies a field value is unique in its table. 
+_(thanks to Spreiter301 for his contribution... see "googlecode issue":http://code.google.com/p/mandubian-play-crud-siena/issues/detail?id=2)_
+*Be careful this annotation calls DB requests that can be quite heavy so it might impact your application performance.* (I will try to provide a mechanism to control where this annotation is applied but it is not so trivial) 
 
-p(note). **Note:** I tested it with greenscript and it seems to work fine!
+
+h2. <a>Known Limitations</a>
+
+h3. **GAE**
+
+* _@Id_ annotated field corresponding to the primary key must be Long type
+* _@Id_ annotated field corresponding to the primary key must be called "id"
+

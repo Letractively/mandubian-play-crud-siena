@@ -21,9 +21,11 @@ import play.Logger;
 import play.Play;
 import play.data.binding.BeanWrapper;
 import play.data.validation.Required;
+import play.data.validation.Password;
 import play.data.validation.Validation;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
+import play.modules.crudsiena.SienaUtils;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.Router;
@@ -356,7 +358,7 @@ public class CRUD extends Controller {
         public SienaSupport findById(Object id) {
         	Query<? extends SienaSupport> query = Model.all(entityClass);
         	try {
-        		query.filter("id", play.data.binding.Binder.directBind(id + "", SienaSupport.findKeyType(entityClass)));
+        		query.filter("id", play.data.binding.Binder.directBind(id + "", SienaUtils.findKeyType(entityClass)));
 	        } catch (Exception e) {
 	            throw new RuntimeException("Something bad with id type ?", e);
 	        }
@@ -487,6 +489,9 @@ public class CRUD extends Controller {
             }
             if (field.isAnnotationPresent(Required.class)) {
                 required = true;
+            }
+            if (field.isAnnotationPresent(Password.class)) {
+            	 type = "password";
             }
             
             name = field.getName();

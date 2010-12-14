@@ -59,3 +59,4 @@ crud.map.pleasefillkey = Please fill the key field
 
 validation.fieldMap.alreadyExists = %s[%s] already exists
 validation.notParsable = field "%s" not parsable : %s
+validation.unique = this field has a unique constraint and this value already exists
