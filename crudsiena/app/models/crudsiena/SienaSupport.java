@@ -18,6 +18,7 @@ import play.data.binding.BeanWrapper;
 import play.data.binding.Binder;
 import play.data.validation.Validation;
 import play.exceptions.UnexpectedException;
+import play.modules.crudsiena.SienaUtils;
 import play.mvc.Scope.Params;
 import siena.DateTime;
 import siena.Filter;
@@ -133,7 +134,7 @@ public abstract class SienaSupport
 								Class relClass = Play.classloader.loadClass(relation);
 								Object res = 
 									Model.all(relClass)
-										.filter("id", Binder.directBind(_id, findKeyType(relClass)))
+										.filter("id", Binder.directBind(_id, SienaUtils.findKeyType(relClass)))
 										.get();
 								if(res!=null){
 									// sets the object to the owner field into the relation entity
@@ -159,7 +160,7 @@ public abstract class SienaSupport
 							Class relClass = Play.classloader.loadClass(relation);
 							Object res = 
 								Model.all(relClass)
-									.filter("id", Binder.directBind(ids[0], findKeyType(relClass)))
+									.filter("id", Binder.directBind(ids[0], SienaUtils.findKeyType(relClass)))
 									.get();
 							if(res!=null)
 								bw.set(field.getName(), o, res);
@@ -228,50 +229,12 @@ public abstract class SienaSupport
         }
         return false;
     } 
+      
+    private Object key;
     
-    // More utils
-    public static Object findKey(Object entity) {
-        try {
-            Class c = entity.getClass();
-            while (!c.equals(Object.class)) {
-                for (Field field : c.getDeclaredFields()) {
-                    if (field.isAnnotationPresent(Id.class)) {
-                        field.setAccessible(true);
-                        return field.get(entity);
-                    }
-                }
-                c = c.getSuperclass();
-            }
-        } catch (Exception e) {
-            throw new UnexpectedException("Error while determining the object @Id for an object of type " + entity.getClass());
-        }
-        return null;
-    }    
-    
- 	public static Class findKeyType(Class c) {
-        try {
-            while (!c.equals(Object.class)) {
-                for (Field field : c.getDeclaredFields()) {
-                    if (field.isAnnotationPresent(Id.class)) {
-                        field.setAccessible(true);
-                        return field.getType();
-                    }
-                }
-                c = c.getSuperclass();
-            }
-        } catch (Exception e) {
-            throw new UnexpectedException("Error while determining the object @Id for an object of type " + c);
-        }
-        return null;
-    }
- 	
-    private transient Object key;
-
-    public Object getEntityId() {
-        if (key == null) {
-            key = findKey(this);
-        }
-        return key;
+    public Object getEntityId(){
+    	if(key == null) return SienaUtils.findKey(this);
+    	else return key;
     }
     
     public <T extends SienaSupport> T addListElement(String name) {

@@ -3,6 +3,7 @@ package play.modules.crudsiena;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import javassist.CtClass;
 import javassist.CtField;
 import javassist.bytecode.AnnotationsAttribute;
@@ -24,7 +25,6 @@ public class SienaEnhancer extends Enhancer {
 			throws Exception {
         Logger.debug("CrudSiena: start to enhance class:" + applicationClass.name);
         // this method will be called after configuration finished
-        // if (!MorphiaPlugin.configured()) return;
 
         final CtClass ctClass = makeClass(applicationClass);
         
