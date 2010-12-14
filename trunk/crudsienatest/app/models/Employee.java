@@ -6,6 +6,8 @@ import java.util.Map;
 
 import play.data.binding.As;
 import play.data.validation.MaxSize;
+import play.data.validation.Password;
+import play.modules.crudsiena.CrudUnique;
 
 import models.crudsiena.SienaSupport;
 import siena.Column;
@@ -20,6 +22,7 @@ import siena.Model;
 import siena.NotNull;
 import siena.Query;
 import siena.Table;
+import siena.embed.At;
 import siena.embed.Embedded;
 import siena.embed.EmbeddedList;
 import siena.embed.EmbeddedMap;
@@ -33,13 +36,17 @@ public class Employee extends SienaSupport {
         
         @Column("first_name")
         @Max(10) @NotNull
+        @CrudUnique
         //@play.data.validation.MaxSize(10) @play.data.validation.Required
         public String firstName;
-        
-        
+                
         @Column("last_name")
         @Max(200) @NotNull
         public String lastName;
+        
+        @Password
+        @Column("pwd")
+        public String pwd;
         
         @Column("contact_info")
         @NotNull
@@ -73,6 +80,15 @@ public class Employee extends SienaSupport {
                 public String filename;
                 public String title;
                 public int views;
+        }
+              
+        @Embedded
+        public List<UserBlabla> items;
+
+        @EmbeddedList
+        public class UserBlabla {
+          @At(0) public String item;
+          @At(1) public String item2;
         }
         
         public static Query<Employee> all() {
