@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.google.appengine.api.datastore.Blob;
+
 import play.data.binding.As;
 import play.data.validation.MaxSize;
 import play.data.validation.Password;
@@ -85,6 +87,10 @@ public class Employee extends SienaSupport {
         @Embedded
         public List<UserBlabla> items;
 
+        @Column("blob")
+        @As(binder=models.crudsiena.GaeBlobBinder.class)
+        public Blob blob;
+        
         @EmbeddedList
         public class UserBlabla {
           @At(0) public String item;
