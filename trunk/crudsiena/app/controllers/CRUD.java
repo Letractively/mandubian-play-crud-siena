@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import com.google.appengine.api.datastore.Blob;
+
 import models.crudsiena.SienaSupport;
 
 import play.Logger;
@@ -482,7 +484,9 @@ public class CRUD extends Controller {
             		relation = field.getType().getName();
             	}
             }
-
+            else if (Blob.class.isAssignableFrom(field.getType())) {
+            	type = "blob";
+            }
 
             if (field.isAnnotationPresent(Id.class)) {
                 type = null;
