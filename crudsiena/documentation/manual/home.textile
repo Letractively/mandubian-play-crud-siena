@@ -151,6 +151,31 @@ h2. <a>Specific CrudSiena annotations</a>
 _(thanks to Spreiter301 for his contribution... see "googlecode issue":http://code.google.com/p/mandubian-play-crud-siena/issues/detail?id=2)_
 *Be careful this annotation calls DB requests that can be quite heavy so it might impact your application performance.* (I will try to provide a mechanism to control where this annotation is applied but it is not so trivial) 
 
+h2. <a>Temporary GAE Blob management in Siena/CrudSiena</a>
+
+p(note). _After several requests about GAE Blob in Siena and as we are currently developing the new version of Siena which will manage byte[] directly and map them to Blob (JDBC/GAE/...) but it's not yet ready, I have decided to provide a workaround in CrudSiena until then._
+
+* Temporary how-to for GAE Blob in Siena: 
+** just use the GAE blob type
+** add the @As(binder=models.crudsiena.GaeBlobBinder.class) to bind upload file to the GAE Blob.
+** the binary data from the file are converted into a byte[] and encapsulated into the Blob. 
+* **Warning**: _The mimetype of your file is basically lost during this operation as the Blob only keeps the bytes. That's why the Crud blobfield.html only displays the size of the byte[] and allows you to upload a new file._ 
+
+bc.. 
+import com.google.appengine.api.datastore.Blob;
+
+@Table("employees")
+public class Employee extends SienaSupport {
+
+        ... 
+
+        @Column("blob")
+        @As(binder=models.crudsiena.GaeBlobBinder.class)
+        public Blob blob;
+        
+        ...
+}
+
 
 h2. <a>Known Limitations</a>
 
