@@ -59,7 +59,7 @@ public class SienaEnhancer extends Enhancer {
             	// retrieves @siena.DateTime value
             	AnnotationsAttribute attr = getAnnotations(cf);
             	
-            	// adds @play.data.binding.As(lang={"*"}, value={"yyyy-MM-dd hh:mm:ss"})
+            	// adds @play.data.binding.As(lang={"*"}, value={"yyyy-MM-dd HH:mm:ss"})
             	Map<String, MemberValue> map = new HashMap<String, MemberValue>();
             	ConstPool cp = attr.getConstPool();
             	// creates lang array
@@ -70,7 +70,7 @@ public class SienaEnhancer extends Enhancer {
                 map.put("lang", langMember);
             	// creates value array
             	MemberValue[] valArray = new MemberValue[1];
-            	valArray[0] = new StringMemberValue("yyyy-MM-dd hh:mm:ss", cp);
+            	valArray[0] = new StringMemberValue("yyyy-MM-dd HH:mm:ss", cp);
             	ArrayMemberValue valMember = new ArrayMemberValue(cp);
             	valMember.setValue(valArray);            	
                 map.put("value", valMember);
