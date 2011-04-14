@@ -1,5 +1,12 @@
 p(note). the module project is hosted by google code at "mandubian-play-crud-siena":http://code.google.com/p/mandubian-play-crud-siena under MIT license
 
+h1. CRUD Siena Play! v1.6 release notes
+
+* Play v1.2 support with 1.6_Play1.2 
+* Play v1.1 support with 1.6_Play1.1 
+* support for byte[]/enums/GAE blobs
+
+
 h1. CRUD Siena Play! module How-to
 
 The CRUD (Create, Read, Update, Delete) Siena module generates a fully usable web interface for your Siena Model objects.
