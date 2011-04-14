@@ -59,9 +59,9 @@
                     #{crud.fileField name:field.name, value:(currentObject ? currentObject[field.name] : null), id:currentObject?.id /}
                 #{/if}
 
- 				#{if field.type == 'binary'}
+ 				*{#{if field.type == 'binary'}
             		#{crud.fileField name:field.name, value:(currentObject ? currentObject[field.name] : null), id:currentObject?.id /}
-        		#{/if}
+        		#{/if}}*
 
                 #{if field.type == 'longtext'}
                     #{crud.longtextField name:field.name, value:(currentObject ? currentObject[field.name] : null) /}
@@ -105,7 +105,11 @@
                 #{if field.type == 'blob'}
             		#{crud.blobField name:field.name, value:(currentObject ? currentObject[field.name] : null), id:currentObject?.id /}
         		#{/if}
-                
+
+                #{if field.type == 'binary'}
+            		#{crud.binaryField name:field.name, value:(currentObject ? currentObject[field.name] : null), id:currentObject?.id /}
+        		#{/if}
+        		                
                 <span class="crudHelp">
                     &{am}
                         %{ play.data.validation.Validation.getValidators(currentType.entityClass, fieldName, 'object').each() { }%

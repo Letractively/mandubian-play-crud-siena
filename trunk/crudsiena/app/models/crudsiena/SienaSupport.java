@@ -20,14 +20,13 @@ import play.data.validation.Validation;
 import play.exceptions.UnexpectedException;
 import play.modules.crudsiena.SienaUtils;
 import play.mvc.Scope.Params;
-import siena.DateTime;
 import siena.Filter;
-import siena.Id;
 import siena.Json;
 import siena.Model;
 import siena.Query;
 import siena.embed.Embedded;
 
+import com.google.appengine.api.datastore.Blob;
 import com.google.gson.JsonParseException;
 
 /**
@@ -113,7 +112,16 @@ public abstract class SienaSupport
 	            		multiple = false;
 	            	}
 				}
-
+				else if(byte[].class.isAssignableFrom(field.getType())
+						|| Blob.class.isAssignableFrom(field.getType()))
+				{
+					// if params is present but empty, resets the older value
+					String[] posted = params.get(name + "." + field.getName());
+					// TODO
+					Object val = field.get(o);	
+					//params.put(name + "." + field.getName(), val);
+				}
+				
 				if (isEntity) {
 					// builds entity list for many to one
 					if (multiple) {

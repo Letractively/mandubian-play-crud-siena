@@ -328,9 +328,9 @@ public class CRUD extends Controller {
         	
             if (orderBy == null) {
             	if(order == null || "ASC".equals(order.toUpperCase()))
-            		orderBy = "id";
+            		orderBy = SienaUtils.findKeyName(entityClass);
             	else if("DESC".equals(order.toUpperCase()))
-            		orderBy = "-id";
+            		orderBy = "-" + SienaUtils.findKeyName(entityClass);
             }
             else if(order != null && "DESC".equals(order.toUpperCase())){
             		orderBy = "-"+orderBy;
@@ -360,7 +360,7 @@ public class CRUD extends Controller {
         public SienaSupport findById(Object id) {
         	Query<? extends SienaSupport> query = Model.all(entityClass);
         	try {
-        		query.filter("id", play.data.binding.Binder.directBind(id + "", SienaUtils.findKeyType(entityClass)));
+        		query.filter(SienaUtils.findKeyName(entityClass), play.data.binding.Binder.directBind(id + "", SienaUtils.findKeyType(entityClass)));
 	        } catch (Exception e) {
 	            throw new RuntimeException("Something bad with id type ?", e);
 	        }
@@ -484,10 +484,13 @@ public class CRUD extends Controller {
             		relation = field.getType().getName();
             	}
             }
+            else if (byte[].class.isAssignableFrom(field.getType())) {
+            	type = "binary";
+            }
             else if (Blob.class.isAssignableFrom(field.getType())) {
             	type = "blob";
             }
-
+            
             if (field.isAnnotationPresent(Id.class)) {
                 type = null;
             }
