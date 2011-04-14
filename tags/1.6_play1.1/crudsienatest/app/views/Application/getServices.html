@@ -1,0 +1,6 @@
+#{extends 'main.html' /}
+#{set title:'Get Services' /}
+
+#{list items: services, as:'service'}
+	geoloc : ${service.geoloc}
+#{/list}
