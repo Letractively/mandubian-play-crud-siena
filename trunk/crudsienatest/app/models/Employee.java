@@ -1,6 +1,8 @@
 package models;
 
 import java.util.Date;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,6 +84,7 @@ public class Employee extends SienaSupport {
                 public String filename;
                 public String title;
                 public int views;
+                public MyEnum itemEnum;
         }
               
         @Embedded
@@ -91,11 +94,27 @@ public class Employee extends SienaSupport {
         @As(binder=models.crudsiena.GaeBlobBinder.class)
         public Blob blob;
         
+        @Column("bytes")
+        @As(binder=models.crudsiena.GaeByteArrayBinder.class)        
+        public byte[] bs;
+        
         @EmbeddedList
         public class UserBlabla {
           @At(0) public String item;
           @At(1) public String item2;
+          @At(2) public MyEnum itemEnum;
         }
+        
+        public MyEnum enumField;
+        
+        public static enum MyEnum{
+        	VAL1,
+        	VAL2,
+        	VAL3
+        };
+
+        @Filter("owner")
+        public Query<ServiceAccount> services;
         
         public static Query<Employee> all() {
                 return Model.all(Employee.class);
