@@ -1,5 +1,12 @@
 p(note). the module project is hosted by google code at "mandubian-play-crud-siena":http://code.google.com/p/mandubian-play-crud-siena under MIT license
 
+h1. CRUD Siena Play! v1.6 release notes
+
+* Play v1.2 support with 1.6_Play1.2 
+* Play v1.1 support with 1.6_Play1.1 
+* support for byte[]/enums/GAE blobs
+
+
 h1. CRUD Siena Play! module How-to
 
 The CRUD (Create, Read, Update, Delete) Siena module generates a fully usable web interface for your Siena Model objects.
@@ -12,13 +19,18 @@ bc.. play install siena
 
 h2. <a>Install CrudSiena module</a>
 
-h3. For Play! <1.1_, install CrudSiena <=1.01:
+h3. For Play! =1.2, install CrudSiena 1.6_play1.2:
+
+bc.. play install crudsiena-1.6_play1.2
+
+h3. For Play! =1.1.x_, install CrudSiena 1.6_play1.1:
+
+bc.. play install crudsiena-1.6_play1.1
+
+h3. For Play! <1.1_, install CrudSiena 1.01:
 
 bc.. play install crudsiena-1.01
 
-h3. For Play! >=1.1_, install CrudSiena >=1.1:
-
-bc.. play install crudsiena-1.x
 
 
 h2. <a>Your Siena entity shall inherit SienaSupport</a>
@@ -73,6 +85,32 @@ public class Employee extends SienaSupport {
                 public String title;
                 public int views;
         }        
+
+		 @Embedded
+        public List<UserBlabla> items;
+
+        @Column("blob")
+        @As(binder=models.crudsiena.GaeBlobBinder.class)
+        public Blob blob;
+        
+        @Column("bytes")
+        @As(binder=models.crudsiena.GaeByteArrayBinder.class)        
+        public byte[] bs;
+        
+        @EmbeddedList
+        public class UserBlabla {
+          @At(0) public String item;
+          @At(1) public String item2;
+          @At(2) public MyEnum itemEnum;
+        }
+        
+        public MyEnum enumField;
+        
+        public static enum MyEnum{
+        	VAL1,
+        	VAL2,
+        	VAL3
+        };
 
         public static Query<Employee> all() {
                 return Model.all(Employee.class);
