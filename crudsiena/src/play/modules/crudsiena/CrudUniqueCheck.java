@@ -22,6 +22,8 @@ import siena.Query;
  */
 public class CrudUniqueCheck extends AbstractAnnotationCheck<CrudUnique> {
 
+	private static final long serialVersionUID = 4615916626718372468L;
+		
 	public static final String mes = "validation.unique";
 	private CrudUnique unique;
 	

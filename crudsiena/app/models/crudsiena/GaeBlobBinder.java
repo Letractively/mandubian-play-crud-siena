@@ -21,10 +21,8 @@ public class GaeBlobBinder implements TypeBinder<Blob> {
             	
             	if(data.length > 0)
             		return new Blob(data);
-                 
-                return null;
             }
         }
-        return null;
+        return Binder.MISSING;
     }
 }
