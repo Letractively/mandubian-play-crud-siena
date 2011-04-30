@@ -22,6 +22,7 @@ import models.crudsiena.SienaSupport;
 import play.Logger;
 import play.Play;
 import play.data.binding.BeanWrapper;
+import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.data.validation.Password;
 import play.data.validation.Validation;
@@ -413,8 +414,8 @@ public class CRUD extends Controller {
             if (CharSequence.class.isAssignableFrom(field.getType())) {
                 type = "text";
                 searchable = true;
-                if (field.isAnnotationPresent(Max.class)) {
-                    int maxSize = field.getAnnotation(Max.class).value();
+                if (field.isAnnotationPresent(MaxSize.class)) {
+                    int maxSize = field.getAnnotation(MaxSize.class).value();
                     if (maxSize > 100) {
                         type = "longtext";
                     }
